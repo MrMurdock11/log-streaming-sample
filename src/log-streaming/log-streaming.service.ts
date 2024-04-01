@@ -6,7 +6,9 @@ import { Response } from 'express';
 
 @Injectable({ scope: Scope.REQUEST })
 export class LogStreamingService {
-  private readonly LOG_FILE_PATH = path.resolve('logs/26-03-2024.log');
+  private readonly LOG_FILE_PATH = path.resolve(
+    `logs/${new Date().toLocaleDateString().replace(/\//g, '-')}.log`,
+  );
   private lastFileSize = 0;
 
   watchLogFile(clientResponse: Response): void {
