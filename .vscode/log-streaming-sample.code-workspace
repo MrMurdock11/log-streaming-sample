@@ -1,0 +1,30 @@
+{
+	"folders": [
+		{
+			"name": "✨ log-streaming",
+			"path": ".."
+		},
+		{
+			"name": "🚀 @log-streaming/api",
+			"path": "../apps/api"
+		},
+		{
+			"name": "⚙️ @log-streaming/generator",
+			"path": "../tools/generator"
+		},
+		{
+			"name": "🪄 @log-streaming/ui",
+			"path": "../apps/ui"
+		}
+	],
+	"settings": {
+		"editor.formatOnSave": true,
+		"[typescript]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		"[typescriptreact]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		"jest.runMode": "deferred"
+	}
+}

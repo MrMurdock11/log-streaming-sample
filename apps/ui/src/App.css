@@ -1,0 +1,30 @@
+/* LogList.css */
+.log-list-container {
+  border-radius: 5px;
+  width: 100vw;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  position: relative;
+  padding-top: 56px;
+}
+
+.log-list-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #212121;
+  margin: 0;
+  padding: 10px 0;
+  z-index: 1000; /* Ensure it sits above other content */
+}
+
+.log-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 0; /* Adjusted to align directly under the header */
+}
+
+.log-item {
+  margin-bottom: 10px;
+  padding: 5px;
+}

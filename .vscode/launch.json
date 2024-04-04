@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "Launch Program",
-      "program": "${workspaceFolder}/.tools/index.js",
+      "program": "${workspaceFolder}/tools/generator/index.js",
       "request": "launch",
       "skipFiles": [
         "<node_internals>/**"

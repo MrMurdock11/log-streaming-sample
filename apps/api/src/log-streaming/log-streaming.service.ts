@@ -7,7 +7,7 @@ import { Response } from 'express';
 @Injectable({ scope: Scope.REQUEST })
 export class LogStreamingService {
   private readonly LOG_FILE_PATH = path.resolve(
-    `logs/${new Date().toLocaleDateString().replace(/\//g, '-')}.log`,
+    `../../data/logs/${new Date().toISOString().slice(0, 10)}.log`,
   );
   private lastFileSize = 0;
 
@@ -15,9 +15,10 @@ export class LogStreamingService {
     const watcher = chokidar.watch(this.LOG_FILE_PATH, { persistent: true });
 
     clientResponse.writeHead(200, {
-      'Content-Type': 'text/event-stream',
-      'Transfer-Encoding': 'chunked',
+      'Access-Control-Allow-Origin': '*',
+      'Cache-Control': 'no-cache',
       Connection: 'keep-alive',
+      'Content-Type': 'text/event-stream',
     });
 
     this.updateLastFileSize();
@@ -28,7 +29,8 @@ export class LogStreamingService {
         const fd = fs.openSync(this.LOG_FILE_PATH, 'r');
         const buffer = Buffer.alloc(currentSize - this.lastFileSize);
         fs.readSync(fd, buffer, 0, buffer.length, this.lastFileSize);
-        clientResponse.write(buffer.toString());
+        clientResponse.write('event: message\n');
+        clientResponse.write('data:' + buffer.toString() + '\n\n');
         fs.closeSync(fd);
         this.lastFileSize = currentSize;
       }
@@ -38,9 +40,6 @@ export class LogStreamingService {
       console.log('Client disconnected. Stopping file watch.');
       watcher.close();
     });
-
-    const data = fs.readFileSync(this.LOG_FILE_PATH, 'utf-8');
-    clientResponse.write(data);
   }
 
   private updateLastFileSize(): void {
