@@ -2,7 +2,7 @@
 	"folders": [
 		{
 			"name": "✨ log-streaming",
-			"path": ".."
+			"path": "..",
 		},
 		{
 			"name": "🚀 @log-streaming/api",

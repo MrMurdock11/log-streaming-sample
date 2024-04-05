@@ -3,6 +3,7 @@ import * as fs from 'node:fs';
 import * as chokidar from 'chokidar';
 import * as path from 'node:path';
 import { Response } from 'express';
+import { v4 } from 'uuid';
 
 @Injectable({ scope: Scope.REQUEST })
 export class LogStreamingService {
@@ -12,6 +13,7 @@ export class LogStreamingService {
   private lastFileSize = 0;
 
   watchLogFile(clientResponse: Response): void {
+    const streamUuid = v4();
     const watcher = chokidar.watch(this.LOG_FILE_PATH, { persistent: true });
 
     clientResponse.writeHead(200, {
@@ -29,8 +31,9 @@ export class LogStreamingService {
         const fd = fs.openSync(this.LOG_FILE_PATH, 'r');
         const buffer = Buffer.alloc(currentSize - this.lastFileSize);
         fs.readSync(fd, buffer, 0, buffer.length, this.lastFileSize);
-        clientResponse.write('event: message\n');
-        clientResponse.write('data:' + buffer.toString() + '\n\n');
+        clientResponse.write(
+          `id: ${streamUuid}\nevent: message\ndata: ${buffer.toString()}\n`,
+        );
         fs.closeSync(fd);
         this.lastFileSize = currentSize;
       }

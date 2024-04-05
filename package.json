@@ -1,6 +1,6 @@
 {
   "name": "log-streaming-sample",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -20,5 +20,8 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "8.2.2"
+  },
+  "dependencies": {
+    "uuid": "9.0.1"
   }
 }

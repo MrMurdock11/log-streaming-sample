@@ -1,25 +1,17 @@
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
+import { useEventSource } from "./common/hooks/useEventSource";
 import "./App.css";
 
 const App = () => {
   const [logs, setLogs] = useState<string[]>([]);
 
-  useEffect(() => {
-    const eventSource = new EventSource("http://localhost:3000/logs/stream");
-
-    eventSource.onmessage = (event) => {
-      setLogs((prevLogs) => [...prevLogs, event.data]);
-    };
-
-    eventSource.onerror = (error) => {
-      console.error("EventSource failed:", error);
-      eventSource.close();
-    };
-
-    return () => {
-      eventSource.close();
-    };
+  const handleMessage = useCallback((event: MessageEvent) => {
+    setLogs((prevLogs) => [...prevLogs, event.data]);
   }, []);
+
+  useEventSource("http://localhost:3000/logs/stream", {
+    onMessage: handleMessage,
+  });
 
   return (
     <div className="log-list-container">
@@ -28,7 +20,6 @@ const App = () => {
         <ul className="log-list">
           {logs.map((log, index) => (
             <li key={index} className="log-item">
-              {/* <span className="log-date">{log}</span> -{" "} */}
               <span className="log-message">{log}</span>
             </li>
           ))}
